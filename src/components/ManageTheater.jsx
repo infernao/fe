@@ -33,15 +33,26 @@ const ManageTheaters = () => {
             return;
         }
 
+        // Find the current theater from state
+        const currentTheater = theaters.find((theater) => theater._id === theaterId);
+        const existingScreenNumbers = currentTheater?.screens?.map(screen => screen.screenNumber) || [];
+        const newScreenNumber = existingScreenNumbers.length > 0
+            ? Math.max(...existingScreenNumbers) + 1
+            : 1; // Dynamic screen number
+
+        const seatPrices = {
+            Standard: parseFloat(standardPrice),
+            Premium: parseFloat(premiumPrice),
+        };
+
+        console.log("Seat Prices being sent:", seatPrices);
+
         const screenData = {
-            screenNumber: 3,
+            screenNumber: newScreenNumber,
             totalSeats: 150,
             seatLayout: "VIP",
             showtimes: ["10:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"],
-            seatPrices: {
-                Standard: parseFloat(standardPrice),
-                Premium: parseFloat(premiumPrice)
-            }
+            seatPrices: seatPrices,  // Ensuring it's present in the request
         };
 
         try {
@@ -49,17 +60,22 @@ const ManageTheaters = () => {
             await axios.post(`http://localhost:5000/api/theaters/${theaterId}/screen`, screenData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
             });
-            const updatedTheaters = theaters.map((theater) =>
-                theater._id === theaterId ? { ...theater, screens: [...theater.screens, screenData] } : theater
-            );
-            setTheaters(updatedTheaters);
+
+            setTheaters(theaters.map((theater) =>
+                theater._id === theaterId
+                    ? { ...theater, screens: [...theater.screens, screenData] }
+                    : theater
+            ));
         } catch (error) {
-            console.error("Error adding screen", error);
-            alert("Failed to add screen. Try again.");
+            console.error("Error adding screen:", error.response?.data || error.message);
+            alert("Failed to add screen. Check console for details.");
         }
     };
+
+
 
 
     const handleDeleteScreen = async (theaterId, screenId) => {

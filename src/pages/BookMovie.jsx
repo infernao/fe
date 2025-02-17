@@ -3,8 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import Loading from "../components/Loading";
 
-// const SEAT_PRICES = { Standard: 15, Premium: 30 };
-const SHOWTIMES = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"]; // Available showtimes
+const SHOWTIMES = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
 
 const BookMovie = () => {
   const { id } = useParams();
@@ -18,6 +17,8 @@ const BookMovie = () => {
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [seatPrices, setSeatPrices] = useState({ Standard: 15, Premium: 30 });
+  // New state for selected date. (Starts empty so user must pick one)
+  const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const BookMovie = () => {
         const theatersResponse = await api.get("/theaters");
         setTheaters(theatersResponse.data);
 
-        // If movie has predefined showtimes, set default to the first available one
+        // Set default showtime if available
         if (movieResponse.data.showtimes && movieResponse.data.showtimes.length > 0) {
           setSelectedShowtime(movieResponse.data.showtimes[0]);
         }
@@ -43,27 +44,28 @@ const BookMovie = () => {
     fetchData();
   }, [id]);
 
+  // Fetch booked seats only if a date is picked along with theater, screen, and showtime.
   useEffect(() => {
-    if (selectedTheater && selectedScreen && selectedShowtime) {
+    if (selectedTheater && selectedScreen && selectedShowtime && selectedDate) {
       fetchBookedSeats();
     }
-  }, [selectedTheater, selectedScreen, selectedShowtime]);
+  }, [selectedTheater, selectedScreen, selectedShowtime, selectedDate]);
 
   useEffect(() => {
     if (selectedTheater && selectedScreen) {
-      const theater = theaters.find(t => t._id === selectedTheater);
-      const screen = theater?.screens.find(s => s.screenNumber == selectedScreen);
+      const theater = theaters.find((t) => t._id === selectedTheater);
+      const screen = theater?.screens.find((s) => s.screenNumber == selectedScreen);
       if (screen) {
-        setSeatPrices(screen.seatPrices || { Standard: 15, Premium: 30 }); // Use predefined prices, fallback to defaults
+        setSeatPrices(screen.seatPrices || { Standard: 15, Premium: 30 });
       }
     }
-  }, [selectedTheater, selectedScreen]);
+  }, [selectedTheater, selectedScreen, theaters]);
 
   useEffect(() => {
     let newTotal = seats.reduce((sum, seat) => {
       let seatPrice = seatPrices[seat.type] || 0;
       if (seat.type === "Premium") {
-        seatPrice += 15; // Extra charge for premium seats
+        seatPrice += 15;
       }
       return sum + seatPrice;
     }, 0);
@@ -72,8 +74,9 @@ const BookMovie = () => {
 
   const fetchBookedSeats = async () => {
     try {
+      // Pass the selected date as a query parameter.
       const response = await api.get(
-        `/bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}`
+        `/bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}?date=${selectedDate}`
       );
       setBookedSeats(response.data.bookedSeats || []);
     } catch (error) {
@@ -87,14 +90,24 @@ const BookMovie = () => {
     setSelectedScreen("");
     setSeats([]);
     setBookedSeats([]);
+    // Reset date if theater changes
+    setSelectedDate("");
   };
 
   const handleScreenChange = (e) => {
     setSelectedScreen(e.target.value);
+    setSeats([]);
+    setBookedSeats([]);
+    // Reset date if screen changes
+    setSelectedDate("");
   };
 
   const handleShowtimeChange = (e) => {
     setSelectedShowtime(e.target.value);
+    setSeats([]);
+    setBookedSeats([]);
+    // Reset date if showtime changes
+    setSelectedDate("");
   };
 
   const handleSeatChange = (e) => {
@@ -114,21 +127,28 @@ const BookMovie = () => {
         alert("Please select a theater, screen, and showtime");
         return;
       }
+      if (!selectedDate) {
+        alert("Please select a date");
+        return;
+      }
       if (seats.length === 0) {
         alert("Please select at least one seat");
         return;
       }
 
+      console.log("Selected date:", selectedDate);
       const bookingData = {
         movieId: movie._id,
         theaterId: selectedTheater,
         screenNumber: parseInt(selectedScreen, 10),
         showtime: selectedShowtime,
         seats: seats.map((seat) => seat.number),
+        date: selectedDate,
       };
+
       const response = await api.post("/bookings", bookingData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure token is stored
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -201,7 +221,6 @@ const BookMovie = () => {
             style={{ marginBottom: "10px", padding: "5px" }}
           >
             <option value="">Select a Showtime</option>
-            {/* If predefined showtimes exist, show them all */}
             {movie.showtimes && movie.showtimes.length > 0
               ? movie.showtimes.map((showtime, index) => (
                 <option key={index} value={showtime}>
@@ -214,31 +233,89 @@ const BookMovie = () => {
                 </option>
               ))}
           </select>
-
         </>
       )}
 
+      {/* Date Picker */}
       {selectedTheater && selectedScreen && selectedShowtime && (
         <>
-          <h3>Select Seats:</h3>
-          {[...Array(10)].map((_, i) => {
-            const seatNumber = `Seat${i + 1}`;
-            const isBooked = bookedSeats.includes(seatNumber);
-
-            return (
-              <label key={i} style={{ marginRight: "10px", opacity: isBooked ? 0.5 : 1 }}>
-                {seatNumber} (Standard)
-                <input
-                  type="checkbox"
-                  value={`${seatNumber}-Standard`}
-                  onChange={handleSeatChange}
-                  disabled={isBooked}
-                />
-              </label>
-            );
-          })}
+          <label htmlFor="date">Select Date:</label>
+          <input
+            type="date"
+            id="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            style={{ marginBottom: "10px", padding: "5px" }}
+          />
         </>
       )}
+
+      {/* Only show seat selection if a date is selected */}
+      {/* Seat Selection */}
+      {selectedTheater && selectedScreen && selectedShowtime && selectedDate && (
+        <>
+          <h3>Select Seats:</h3>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            {/* Standard Seats (10 seats) */}
+            {[...Array(10)].map((_, i) => {
+              const seatNumber = `S${i + 1}`;
+              const isBooked = bookedSeats.includes(seatNumber);
+              const seatPrice = seatPrices.Standard; // Use predefined price
+
+              return (
+                <label
+                  key={seatNumber}
+                  style={{
+                    marginRight: "10px",
+                    opacity: isBooked ? 0.5 : 1,
+                    cursor: isBooked ? "not-allowed" : "pointer"
+                  }}
+                >
+                  {seatNumber} (Standard) - ${seatPrice}
+                  <input
+                    type="checkbox"
+                    value={`${seatNumber}-Standard`}
+                    onChange={handleSeatChange}
+                    disabled={isBooked}
+                  />
+                </label>
+              );
+            })}
+
+            {/* Premium Seats (6 seats) */}
+            {[...Array(6)].map((_, i) => {
+              const seatNumber = `P${i + 1}`;
+              const isBooked = bookedSeats.includes(seatNumber);
+              const seatPrice = seatPrices.Premium; // Use predefined price
+
+              return (
+                <label
+                  key={seatNumber}
+                  style={{
+                    marginRight: "10px",
+                    opacity: isBooked ? 0.5 : 1,
+                    cursor: isBooked ? "not-allowed" : "pointer",
+                    fontWeight: "bold", color: "goldenrod" // Premium seats styling
+                  }}
+                >
+                  {seatNumber} (Premium) - ${seatPrice}
+                  <input
+                    type="checkbox"
+                    value={`${seatNumber}-Premium`}
+                    onChange={handleSeatChange}
+                    disabled={isBooked}
+                    style={{
+                      accentColor: "goldenrod", // Make the checkbox golden
+                    }}
+                  />
+                </label>
+              );
+            })}
+          </div>
+        </>
+      )}
+
 
       {seats.length > 0 && (
         <>
@@ -262,6 +339,8 @@ const BookMovie = () => {
 };
 
 export default BookMovie;
+
+
 
 
 

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import api from '../utils/api';
-import BookingCard from '../components/BookingCard';
-import Loading from '../components/Loading';
+import React, { useState, useEffect } from "react";
+import api from "../utils/api";
+import BookingCard from "../components/BookingCard";
+import Loading from "../components/Loading";
 
 const MyBookings = () => {
     const [bookings, setBookings] = useState([]);
@@ -11,12 +11,15 @@ const MyBookings = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await api.get('/bookings/user');
-                const validBookings = response.data.filter(booking => booking.movieId?.title); // Filter valid bookings
+                const response = await api.get("/bookings/user");
+                // Filter to include bookings with valid movie details
+                const validBookings = response.data.filter(
+                    (booking) => booking.movieId?.title
+                );
                 setBookings(validBookings);
             } catch (error) {
-                console.error('Error fetching bookings:', error);
-                setError('Failed to fetch bookings. Please try again.');
+                console.error("Error fetching bookings:", error);
+                setError("Failed to fetch bookings. Please try again.");
             } finally {
                 setLoading(false);
             }
@@ -25,19 +28,18 @@ const MyBookings = () => {
         fetchBookings();
     }, []);
 
-
     const handleCancelBooking = async (bookingId) => {
-        if (!window.confirm('Are you sure you want to cancel this booking?')) {
+        if (!window.confirm("Are you sure you want to cancel this booking?")) {
             return;
         }
 
         try {
             await api.delete(`/bookings/${bookingId}`);
-            setBookings(bookings.filter(booking => booking._id !== bookingId)); // Update UI
-            alert('Booking canceled successfully!');
+            setBookings(bookings.filter((booking) => booking._id !== bookingId));
+            alert("Booking canceled successfully!");
         } catch (error) {
-            console.error('Error canceling booking:', error);
-            alert('Failed to cancel the booking. Please try again.');
+            console.error("Error canceling booking:", error);
+            alert("Failed to cancel the booking. Please try again.");
         }
     };
 
@@ -46,34 +48,48 @@ const MyBookings = () => {
     }
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: "20px" }}>
             <h2>My Bookings</h2>
-
             {error ? (
-                <p style={{ color: 'red' }}>{error}</p>
+                <p style={{ color: "red" }}>{error}</p>
             ) : bookings.length === 0 ? (
                 <p>No bookings found.</p>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-                    {bookings.map(booking => (
-                        <div key={booking._id} style={{ position: 'relative' }}>
-                            <BookingCard booking={booking} />
-                            <button
-                                onClick={() => handleCancelBooking(booking._id)}
-                                style={{
-                                    backgroundColor: '#ff4d4d',
-                                    color: 'white',
-                                    padding: '8px',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    width: '100%',
-                                    marginTop: '10px',
-                                }}
-                            >
-                                Cancel Booking
-                            </button>
-                        </div>
-                    ))}
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                        gap: "20px",
+                    }}
+                >
+                    {bookings.map((booking) => {
+                        // Use the booking date (or default) and check if it's expired
+                        const bookingDate = booking.date
+                            ? new Date(booking.date)
+                            : new Date("2025-02-16");
+                        const isExpired = bookingDate < new Date();
+
+                        return (
+                            <div key={booking._id} style={{ position: "relative" }}>
+                                <BookingCard booking={booking} />
+                                <button
+                                    onClick={() => handleCancelBooking(booking._id)}
+                                    disabled={isExpired}
+                                    style={{
+                                        backgroundColor: isExpired ? "#cccccc" : "#ff4d4d",
+                                        color: "white",
+                                        padding: "8px",
+                                        border: "none",
+                                        cursor: isExpired ? "not-allowed" : "pointer",
+                                        width: "100%",
+                                        marginTop: "10px",
+                                    }}
+                                >
+                                    Cancel Booking
+                                </button>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>
@@ -81,3 +97,6 @@ const MyBookings = () => {
 };
 
 export default MyBookings;
+
+
+
