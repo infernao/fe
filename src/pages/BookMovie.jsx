@@ -145,16 +145,14 @@ const BookMovie = () => {
         seats: seats.map((seat) => seat.number),
         date: selectedDate,
       };
+      navigate("/payment-simulation", { state: { ...bookingData, totalPrice } });
+      // const response = await api.post("/bookings", bookingData, {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //   },
+      // });
 
-      const response = await api.post("/bookings", bookingData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
 
-      if (response.status === 201) {
-        navigate("/payment-simulation", { state: { ...bookingData, totalPrice } });
-      }
 
     } catch (error) {
       console.error("Error booking tickets:", error);
