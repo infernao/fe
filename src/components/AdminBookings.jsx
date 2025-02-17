@@ -13,7 +13,7 @@ const AdminBookings = () => {
     const fetchBookings = async () => {
         try {
             const token = localStorage.getItem('token'); // Get token from storage
-            const response = await axios.get('http://localhost:5000/api/bookings/all', {
+            const response = await axios.get('https://movie-booking-bxks.onrender.com/api/bookings/all', {
                 headers: {
                     Authorization: `Bearer ${token}`, // Attach token
                 },
@@ -31,7 +31,7 @@ const AdminBookings = () => {
         try {
             console.log("Canceling booking with ID:", bookingId);
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/bookings/${bookingId}`, {
+            await axios.delete(`https://movie-booking-bxks.onrender.com/api/bookings/${bookingId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Attach token
                 },
