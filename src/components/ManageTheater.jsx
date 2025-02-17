@@ -9,7 +9,7 @@ const ManageTheaters = () => {
         const fetchTheaters = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/theaters/', {
+                const response = await axios.get('https://movie-booking-bxks.onrender.com/api/theaters/', {
                     headers: {
                         Authorization: `Bearer ${token}`, // Attach token
                     },
@@ -57,7 +57,7 @@ const ManageTheaters = () => {
 
         try {
             const token = localStorage.getItem("token");
-            await axios.post(`http://localhost:5000/api/theaters/${theaterId}/screen`, screenData, {
+            await axios.post(`https://movie-booking-bxks.onrender.com/api/theaters/${theaterId}/screen`, screenData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const ManageTheaters = () => {
         try {
             console.log(`Deleting screen ${screenId} from theater ${theaterId}`);
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/theaters/${theaterId}/screen/${screenId}`, {
+            await axios.delete(`https://movie-booking-bxks.onrender.com/api/theaters/${theaterId}/screen/${screenId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Attach token
                 },
@@ -105,7 +105,7 @@ const ManageTheaters = () => {
         if (confirmation) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:5000/api/theaters/${theaterId}`, {
+                await axios.delete(`https://movie-booking-bxks.onrender.com/api/theaters/${theaterId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`, // Attach token
                     },

@@ -25,7 +25,7 @@ const PaymentSimulation = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:5000/api/bookings",
+                "https://movie-booking-bxks.onrender.com/api/bookings",
                 {
                     ...bookingData,
                     paymentStatus: success ? "successful" : "failed",
