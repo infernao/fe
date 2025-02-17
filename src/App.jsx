@@ -11,10 +11,10 @@ import TheaterDetail from './pages/TheaterDetail';
 import BookMovie from './pages/BookMovie';
 import MyBookings from './pages/MyBookings';
 import AdminDashboard from './pages/AdminDashboard';
-import PaymentSimulation from "./pages/PaymentSimulation";
 import AdminBookings from './components/AdminBookings'; // Import AdminBookings
 import ProtectedRoute from './components/ProtectedRoute';
 import Loading from './components/Loading'; // Import the Loading component
+import PaymentSimulation from './pages/paymentSimulation';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
