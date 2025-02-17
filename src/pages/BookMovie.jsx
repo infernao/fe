@@ -153,8 +153,9 @@ const BookMovie = () => {
       });
 
       if (response.status === 201) {
-        navigate("/payment");
+        navigate("/payment-simulation", { state: { ...bookingData, totalPrice } });
       }
+
     } catch (error) {
       console.error("Error booking tickets:", error);
       alert("Booking failed. Please try again.");

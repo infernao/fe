@@ -11,6 +11,7 @@ import TheaterDetail from './pages/TheaterDetail';
 import BookMovie from './pages/BookMovie';
 import MyBookings from './pages/MyBookings';
 import AdminDashboard from './pages/AdminDashboard';
+import PaymentSimulation from "./pages/PaymentSimulation";
 import AdminBookings from './components/AdminBookings'; // Import AdminBookings
 import ProtectedRoute from './components/ProtectedRoute';
 import Loading from './components/Loading'; // Import the Loading component
@@ -54,6 +55,7 @@ function App() {
         <Route path="/theaters/:id" element={<TheaterDetail />} />
         <Route path="/book-movie/:id" element={<ProtectedRoute element={BookMovie} role={role} requiredRole="customer" />} />
         <Route path="/my-bookings" element={<ProtectedRoute element={MyBookings} role={role} requiredRole="customer" />} />
+        <Route path="/payment-simulation" element={<PaymentSimulation />} />
         <Route path="/admin" element={<ProtectedRoute element={AdminDashboard} role={role} requiredRole="admin" />} />
         <Route path="/admin/bookings" element={<ProtectedRoute element={AdminBookings} role={role} requiredRole="admin" />} />
         {/* Redirect to home page if route doesn't match */}

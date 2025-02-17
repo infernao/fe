@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://movie-booking-bxks.onrender.com/api"; // Adjust if your backend is on a different domain
-// https://movie-booking-bxks.onrender.com
+const API_BASE_URL = "http://localhost:5000/api"; // Adjust if your backend is on a different domain
+// http://localhost:5000
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
