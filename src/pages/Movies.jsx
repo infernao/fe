@@ -27,11 +27,13 @@ const Movies = () => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredMovies = movies.filter(
-    (movie) =>
-      movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      movie.genre.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    movie.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    movie.language.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (movie.showtimes && movie.showtimes.some(showtime => showtime.toLowerCase().includes(searchTerm.toLowerCase())))
   );
+
 
   if (loading) {
     return <Loading />;

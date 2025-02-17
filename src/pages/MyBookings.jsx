@@ -11,9 +11,9 @@ const MyBookings = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await api.get('/bookings/user'); // Adjust API if needed
-                console.log(response.data);
-                setBookings(response.data);
+                const response = await api.get('/bookings/user');
+                const validBookings = response.data.filter(booking => booking.movieId?.title); // Filter valid bookings
+                setBookings(validBookings);
             } catch (error) {
                 console.error('Error fetching bookings:', error);
                 setError('Failed to fetch bookings. Please try again.');
@@ -24,6 +24,7 @@ const MyBookings = () => {
 
         fetchBookings();
     }, []);
+
 
     const handleCancelBooking = async (bookingId) => {
         if (!window.confirm('Are you sure you want to cancel this booking?')) {

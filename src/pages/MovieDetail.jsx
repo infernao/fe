@@ -37,19 +37,19 @@ const MovieDetail = () => {
       <p>Genre: {movie.genre}</p>
       <p>Duration: {movie.duration} minutes</p>
       <p>Language: {movie.language}</p>
+
+      {/* Show showtimes if available, otherwise show all possible showtimes */}
       <h3>Showtimes</h3>
       {movie.showtimes && movie.showtimes.length > 0 ? (
         <ul>
-          {movie.showtimes.map((showtime) => (
-            <li key={showtime._id}>
-              Theater: {showtime.theaterId} , Screen: {showtime.screenNumber},
-              Time: {new Date(showtime.time).toLocaleString()}
-            </li>
+          {movie.showtimes.map((time, index) => (
+            <li key={index}>{time}</li>
           ))}
         </ul>
       ) : (
-        <p>No showtimes available.</p>
+        <p>All showtimes available</p>
       )}
+
       <Link
         to={`/book-movie/${id}`}
         style={{
@@ -68,3 +68,4 @@ const MovieDetail = () => {
 };
 
 export default MovieDetail;
+
