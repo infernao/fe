@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import Loading from "../components/Loading";
 
-const SEAT_PRICES = { Standard: 15, Premium: 30 };
+// const SEAT_PRICES = { Standard: 15, Premium: 30 };
 const SHOWTIMES = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"]; // Available showtimes
 
 const BookMovie = () => {
@@ -17,6 +17,7 @@ const BookMovie = () => {
   const [bookedSeats, setBookedSeats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [seatPrices, setSeatPrices] = useState({ Standard: 15, Premium: 30 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,9 +50,25 @@ const BookMovie = () => {
   }, [selectedTheater, selectedScreen, selectedShowtime]);
 
   useEffect(() => {
-    let newTotal = seats.reduce((sum, seat) => sum + SEAT_PRICES[seat.type], 0);
+    if (selectedTheater && selectedScreen) {
+      const theater = theaters.find(t => t._id === selectedTheater);
+      const screen = theater?.screens.find(s => s.screenNumber == selectedScreen);
+      if (screen) {
+        setSeatPrices(screen.seatPrices || { Standard: 15, Premium: 30 }); // Use predefined prices, fallback to defaults
+      }
+    }
+  }, [selectedTheater, selectedScreen]);
+
+  useEffect(() => {
+    let newTotal = seats.reduce((sum, seat) => {
+      let seatPrice = seatPrices[seat.type] || 0;
+      if (seat.type === "Premium") {
+        seatPrice += 15; // Extra charge for premium seats
+      }
+      return sum + seatPrice;
+    }, 0);
     setTotalPrice(newTotal);
-  }, [seats]);
+  }, [seats, seatPrices]);
 
   const fetchBookedSeats = async () => {
     try {

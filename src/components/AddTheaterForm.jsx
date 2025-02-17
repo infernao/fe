@@ -5,38 +5,40 @@ const AddTheaterForm = () => {
   const [theaterData, setTheaterData] = useState({
     name: "",
     location: "",
-    screens: [{ screenNumber: 1, totalSeats: 50, seatLayout: "Standard" }],
+    screens: [
+      {
+        screenNumber: 1,
+        totalSeats: 50,
+        seatLayout: "Standard",
+        seatPrices: { Standard: 10, Premium: 20 } // Default Prices
+      }
+    ],
   });
 
   const handleChange = (e) => {
-    if (
-      e.target.name.startsWith("screens[") &&
-      e.target.name.endsWith("].screenNumber")
-    ) {
-      const index = parseInt(e.target.name.match(/\[(\d+)\]/)[1], 10);
+    const { name, value } = e.target;
+    const screenMatch = name.match(/^screens\[(\d+)\]\.(.+)$/);
+
+    if (screenMatch) {
+      const index = parseInt(screenMatch[1], 10);
+      const field = screenMatch[2];
       const updatedScreens = [...theaterData.screens];
-      updatedScreens[index].screenNumber = parseInt(e.target.value, 10);
-      setTheaterData({ ...theaterData, screens: updatedScreens });
-    } else if (
-      e.target.name.startsWith("screens[") &&
-      e.target.name.endsWith("].totalSeats")
-    ) {
-      const index = parseInt(e.target.name.match(/\[(\d+)\]/)[1], 10);
-      const updatedScreens = [...theaterData.screens];
-      updatedScreens[index].totalSeats = parseInt(e.target.value, 10);
-      setTheaterData({ ...theaterData, screens: updatedScreens });
-    } else if (
-      e.target.name.startsWith("screens[") &&
-      e.target.name.endsWith("].seatLayout")
-    ) {
-      const index = parseInt(e.target.name.match(/\[(\d+)\]/)[1], 10);
-      const updatedScreens = [...theaterData.screens];
-      updatedScreens[index].seatLayout = e.target.value;
+
+      if (field.startsWith("seatPrices.")) {
+        const priceType = field.split(".")[1];
+        updatedScreens[index].seatPrices[priceType] = parseFloat(value) || 0;
+      } else {
+        updatedScreens[index][field] = field === "screenNumber" || field === "totalSeats"
+          ? parseInt(value, 10) || 0
+          : value;
+      }
+
       setTheaterData({ ...theaterData, screens: updatedScreens });
     } else {
-      setTheaterData({ ...theaterData, [e.target.name]: e.target.value });
+      setTheaterData({ ...theaterData, [name]: value });
     }
   };
+
   const addScreen = () => {
     setTheaterData({
       ...theaterData,
@@ -46,10 +48,12 @@ const AddTheaterForm = () => {
           screenNumber: theaterData.screens.length + 1,
           totalSeats: 50,
           seatLayout: "Standard",
+          seatPrices: { Standard: 10, Premium: 20 } // Default Prices
         },
       ],
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -58,7 +62,14 @@ const AddTheaterForm = () => {
       setTheaterData({
         name: "",
         location: "",
-        screens: [{ screenNumber: 1, totalSeats: 50, seatLayout: "Standard" }],
+        screens: [
+          {
+            screenNumber: 1,
+            totalSeats: 50,
+            seatLayout: "Standard",
+            seatPrices: { Standard: 10, Premium: 20 }
+          }
+        ],
       }); // Reset form
     } catch (error) {
       console.error("Error adding theater:", error);
@@ -98,9 +109,7 @@ const AddTheaterForm = () => {
           style={{ border: "1px solid #ccc", padding: "10px", margin: "10px" }}
         >
           <h4>Screen {index + 1}</h4>
-          <label htmlFor={`screens[${index}].screenNumber`}>
-            Screen Number:
-          </label>
+          <label htmlFor={`screens[${index}].screenNumber`}>Screen Number:</label>
           <input
             type="number"
             id={`screens[${index}].screenNumber`}
@@ -129,6 +138,27 @@ const AddTheaterForm = () => {
             onChange={handleChange}
             required
           />
+
+          {/* Seat Prices */}
+          <label htmlFor={`screens[${index}].seatPrices.Standard`}>Standard Seat Price ($):</label>
+          <input
+            type="number"
+            id={`screens[${index}].seatPrices.Standard`}
+            name={`screens[${index}].seatPrices.Standard`}
+            value={screen.seatPrices.Standard}
+            onChange={handleChange}
+            required
+          />
+
+          <label htmlFor={`screens[${index}].seatPrices.Premium`}>Premium Seat Price ($):</label>
+          <input
+            type="number"
+            id={`screens[${index}].seatPrices.Premium`}
+            name={`screens[${index}].seatPrices.Premium`}
+            value={screen.seatPrices.Premium}
+            onChange={handleChange}
+            required
+          />
         </div>
       ))}
       <button type="button" onClick={addScreen}>
@@ -152,3 +182,4 @@ const AddTheaterForm = () => {
 };
 
 export default AddTheaterForm;
+

@@ -25,20 +25,33 @@ const ManageTheaters = () => {
     }, []);
 
     const handleAddScreen = async (theaterId) => {
+        const standardPrice = prompt("Enter Standard seat price:");
+        const premiumPrice = prompt("Enter Premium seat price:");
+
+        if (!standardPrice || !premiumPrice) {
+            alert("Please enter valid prices.");
+            return;
+        }
+
         const screenData = {
-            screenNumber: 3, // For example, hardcoded for simplicity
+            screenNumber: 3,
             totalSeats: 150,
             seatLayout: "VIP",
-            showtimes: ["10:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"]
+            showtimes: ["10:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"],
+            seatPrices: {
+                Standard: parseFloat(standardPrice),
+                Premium: parseFloat(premiumPrice)
+            }
         };
+
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem("token");
             await axios.post(`http://localhost:5000/api/theaters/${theaterId}/screen`, screenData, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Attach token
+                    Authorization: `Bearer ${token}`,
                 },
             });
-            const updatedTheaters = theaters.map(theater =>
+            const updatedTheaters = theaters.map((theater) =>
                 theater._id === theaterId ? { ...theater, screens: [...theater.screens, screenData] } : theater
             );
             setTheaters(updatedTheaters);
@@ -47,6 +60,7 @@ const ManageTheaters = () => {
             alert("Failed to add screen. Try again.");
         }
     };
+
 
     const handleDeleteScreen = async (theaterId, screenId) => {
         try {
