@@ -42,7 +42,7 @@ const Theaters = () => {
       <h2>Theaters</h2>
       <input
         type="text"
-        placeholder="Search theaters..."
+        placeholder="Search theaters,location..."
         value={searchTerm}
         onChange={handleSearchChange}
         style={{ marginBottom: "10px", padding: "5px", width: "300px" }}

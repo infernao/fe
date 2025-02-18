@@ -64,9 +64,9 @@ const BookMovie = () => {
   useEffect(() => {
     let newTotal = seats.reduce((sum, seat) => {
       let seatPrice = seatPrices[seat.type] || 0;
-      if (seat.type === "Premium") {
+      /*if (seat.type === "Premium") {
         seatPrice += 15;
-      }
+      }*/
       return sum + seatPrice;
     }, 0);
     setTotalPrice(newTotal);
