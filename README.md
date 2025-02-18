@@ -1,6 +1,8 @@
 # Infernao Movie Ticket Booking - Frontend
 
-The frontend of the **Infernao Movie Ticket Booking System** is built with **React** and **Vite** for fast development and hot-reloading. This application allows users to search for movies, book tickets, view past bookings, and more. **Admin users** have access to additional functionalities for managing movies, theaters, and bookings.
+The frontend of the **Infernao Movie Ticket Booking System** is built with **React** and **Vite** for fast development and hot-reloading.
+It's a simple frontend ui design with basic styling.
+This application allows users to search for movies, book tickets, view past bookings, and more. **Admin users** have access to additional functionalities for managing movies, theaters, and bookings.
 
 ## 📌 Table of Contents
 - [Project Overview](#project-overview)
