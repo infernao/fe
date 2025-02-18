@@ -5,15 +5,11 @@ The frontend of the **Infernao Movie Ticket Booking System** is built with **Rea
 ## 📌 Table of Contents
 - [Project Overview](#project-overview)
 - [Technologies Used](#technologies-used)
-- [Frontend Directory Structure](#frontend-directory-structure)
 - [Features](#features)
 - [Installation & Setup](#installation--setup)
 - [Running the Application](#running-the-application)
 - [Components Overview](#components-overview)
 - [Pages Overview](#pages-overview)
-- [API Integration](#api-integration)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -52,6 +48,27 @@ This **React application** serves as the **frontend** for the Infernao Movie Tic
 ### 🔹 Authentication:
 - **Login** and **Register** for users.
 - **Protected routes** for authenticated users and admins (via `ProtectedRoute.jsx`).
+
+---
+
+## Installation & Setup
+
+### **Prerequisites**
+Before running the project, ensure that you have the following installed:
+- **Node.js** (v14 or higher)
+- **npm** (Node Package Manager)
+
+
+## Steps to Install
+
+### 1️⃣ Clone the repository to your local machine:
+git clone https://github.com/your-username/infernao-fe.git
+
+### 2️⃣ Navigate to the project folder:
+cd infernao-fe
+
+### 3️⃣ Install the required dependencies for the backend:
+npm install
 
 ---
 
