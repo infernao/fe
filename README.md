@@ -57,6 +57,7 @@ This **React application** serves as the **frontend** for the Infernao Movie Tic
 
 ### **Prerequisites**
 Before running the project, ensure that you have the following installed:
+- Clone the backend repository first https://github.com/infernao/movie-booking
 - **Node.js** (v14 or higher)
 - **npm** (Node Package Manager)
 
