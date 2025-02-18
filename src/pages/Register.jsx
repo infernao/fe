@@ -5,7 +5,7 @@ import api from "../utils/api";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer"); // Default to customer
+  const [role, setRole] = useState("customer");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await api.post("/auth/register", { username, password, role });
-      navigate("/login"); // Redirect to login page after successful registration
+      navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed.");
       console.error(

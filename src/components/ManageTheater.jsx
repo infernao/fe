@@ -33,12 +33,12 @@ const ManageTheaters = () => {
             return;
         }
 
-        // Find the current theater from state
+
         const currentTheater = theaters.find((theater) => theater._id === theaterId);
         const existingScreenNumbers = currentTheater?.screens?.map(screen => screen.screenNumber) || [];
         const newScreenNumber = existingScreenNumbers.length > 0
             ? Math.max(...existingScreenNumbers) + 1
-            : 1; // Dynamic screen number
+            : 1;
 
         const seatPrices = {
             Standard: parseFloat(standardPrice),
@@ -52,7 +52,7 @@ const ManageTheaters = () => {
             totalSeats: 150,
             seatLayout: "VIP",
             showtimes: ["10:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"],
-            seatPrices: seatPrices,  // Ensuring it's present in the request
+            seatPrices: seatPrices,
         };
 
         try {
@@ -84,7 +84,7 @@ const ManageTheaters = () => {
             const token = localStorage.getItem('token');
             await axios.delete(`https://movie-booking-bxks.onrender.com/api/theaters/${theaterId}/screen/${screenId}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Attach token
+                    Authorization: `Bearer ${token}`,
                 },
             });
             const updatedTheaters = theaters.map(theater => {
@@ -107,7 +107,7 @@ const ManageTheaters = () => {
                 const token = localStorage.getItem('token');
                 await axios.delete(`https://movie-booking-bxks.onrender.com/api/theaters/${theaterId}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Attach token
+                        Authorization: `Bearer ${token}`,
                     },
                 });
                 setTheaters(theaters.filter(theater => theater._id !== theaterId));

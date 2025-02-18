@@ -12,7 +12,7 @@ const MyBookings = () => {
         const fetchBookings = async () => {
             try {
                 const response = await api.get("/bookings/user");
-                // Filter to include bookings with valid movie details
+
                 const validBookings = response.data.filter(
                     (booking) => booking.movieId?.title
                 );
@@ -63,7 +63,7 @@ const MyBookings = () => {
                     }}
                 >
                     {bookings.map((booking) => {
-                        // Use the booking date (or default) and check if it's expired
+
                         const bookingDate = booking.date
                             ? new Date(booking.date)
                             : new Date("2025-02-16");

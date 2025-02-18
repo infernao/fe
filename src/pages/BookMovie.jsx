@@ -17,7 +17,7 @@ const BookMovie = () => {
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [seatPrices, setSeatPrices] = useState({ Standard: 15, Premium: 30 });
-  // New state for selected date. (Starts empty so user must pick one)
+
   const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const BookMovie = () => {
         const theatersResponse = await api.get("/theaters");
         setTheaters(theatersResponse.data);
 
-        // Set default showtime if available
+
         if (movieResponse.data.showtimes && movieResponse.data.showtimes.length > 0) {
           setSelectedShowtime(movieResponse.data.showtimes[0]);
         }
@@ -44,7 +44,7 @@ const BookMovie = () => {
     fetchData();
   }, [id]);
 
-  // Fetch booked seats only if a date is picked along with theater, screen, and showtime.
+
   useEffect(() => {
     if (selectedTheater && selectedScreen && selectedShowtime && selectedDate) {
       fetchBookedSeats();
@@ -74,7 +74,7 @@ const BookMovie = () => {
 
   const fetchBookedSeats = async () => {
     try {
-      // Pass the selected date as a query parameter.
+
       const response = await api.get(
         `/bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}?date=${selectedDate}`
       );
@@ -90,7 +90,7 @@ const BookMovie = () => {
     setSelectedScreen("");
     setSeats([]);
     setBookedSeats([]);
-    // Reset date if theater changes
+
     setSelectedDate("");
   };
 
@@ -98,7 +98,7 @@ const BookMovie = () => {
     setSelectedScreen(e.target.value);
     setSeats([]);
     setBookedSeats([]);
-    // Reset date if screen changes
+
     setSelectedDate("");
   };
 
@@ -106,7 +106,7 @@ const BookMovie = () => {
     setSelectedShowtime(e.target.value);
     setSeats([]);
     setBookedSeats([]);
-    // Reset date if showtime changes
+
     setSelectedDate("");
   };
 
@@ -235,7 +235,7 @@ const BookMovie = () => {
         </>
       )}
 
-      {/* Date Picker */}
+
       {selectedTheater && selectedScreen && selectedShowtime && (
         <>
           <label htmlFor="date">Select Date:</label>
@@ -249,18 +249,17 @@ const BookMovie = () => {
         </>
       )}
 
-      {/* Only show seat selection if a date is selected */}
-      {/* Seat Selection */}
+
       {selectedTheater && selectedScreen && selectedShowtime && selectedDate && (
         <>
           <h3>Select Seats:</h3>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            {/* Standard Seats (10 seats) */}
+
             {[...Array(10)].map((_, i) => {
               const seatNumber = `S${i + 1}`;
               const isBooked = bookedSeats.includes(seatNumber);
-              const seatPrice = seatPrices.Standard; // Use predefined price
+              const seatPrice = seatPrices.Standard;
 
               return (
                 <label
@@ -282,11 +281,11 @@ const BookMovie = () => {
               );
             })}
 
-            {/* Premium Seats (6 seats) */}
+
             {[...Array(6)].map((_, i) => {
               const seatNumber = `P${i + 1}`;
               const isBooked = bookedSeats.includes(seatNumber);
-              const seatPrice = seatPrices.Premium; // Use predefined price
+              const seatPrice = seatPrices.Premium;
 
               return (
                 <label
@@ -295,7 +294,7 @@ const BookMovie = () => {
                     marginRight: "10px",
                     opacity: isBooked ? 0.5 : 1,
                     cursor: isBooked ? "not-allowed" : "pointer",
-                    fontWeight: "bold", color: "goldenrod" // Premium seats styling
+                    fontWeight: "bold", color: "goldenrod"
                   }}
                 >
                   {seatNumber} (Premium) - ${seatPrice}
@@ -305,7 +304,7 @@ const BookMovie = () => {
                     onChange={handleSeatChange}
                     disabled={isBooked}
                     style={{
-                      accentColor: "goldenrod", // Make the checkbox golden
+                      accentColor: "goldenrod",
                     }}
                   />
                 </label>

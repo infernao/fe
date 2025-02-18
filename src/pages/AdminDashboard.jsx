@@ -3,7 +3,7 @@ import AddMovieForm from "../components/AddMovieForm";
 import AddTheaterForm from "../components/AddTheaterForm";
 import AdminBookings from "../components/AdminBookings";
 import ManageTheaters from "../components/ManageTheater";
-import ManageMovies from "../components/ManageMovies"; // Import new component
+import ManageMovies from "../components/ManageMovies";
 
 const AdminDashboard = () => {
     return (
@@ -15,7 +15,7 @@ const AdminDashboard = () => {
                 <AddMovieForm />
             </div>
 
-            <ManageMovies /> {/* Include the ManageMovies component */}
+            <ManageMovies />
 
             <div>
                 <h3>Add New Theater</h3>

@@ -14,7 +14,7 @@ const TheaterCard = ({ theater }) => {
       <h3>{theater.name}</h3>
       <p>Location: {theater.location}</p>
       <Link
-        to={`/movies`} // Redirecting to Movies Page with theater ID
+        to={`/movies`}
         style={{ textDecoration: "none", color: "blue" }}
       >
         View Movies

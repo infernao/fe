@@ -38,7 +38,7 @@ const MovieDetail = () => {
       <p>Duration: {movie.duration} minutes</p>
       <p>Language: {movie.language}</p>
 
-      {/* Show showtimes if available, otherwise show all possible showtimes */}
+
       <h3>Showtimes</h3>
       {movie.showtimes && movie.showtimes.length > 0 ? (
         <ul>

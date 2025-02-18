@@ -1,7 +1,6 @@
 import React from "react";
 
 const BookingCard = ({ booking }) => {
-  // Convert the booking date; fallback to default if not present
   const bookingDate = booking.date
     ? new Date(booking.date)
     : new Date("2025-02-16");

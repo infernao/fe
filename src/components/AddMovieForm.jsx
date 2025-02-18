@@ -11,7 +11,7 @@ const AddMovieForm = () => {
     genre: "",
     duration: "",
     language: "",
-    showtimes: [], // New state to store showtimes
+    showtimes: [],
   });
 
   const handleChange = (e) => {
@@ -30,7 +30,7 @@ const AddMovieForm = () => {
       const token = localStorage.getItem('token');
       await api.post("/movies/", movieData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Attach token
+          Authorization: `Bearer ${token}`,
         },
       });
       alert("Movie added successfully!");
@@ -40,7 +40,7 @@ const AddMovieForm = () => {
         duration: "",
         language: "",
         showtimes: [],
-      }); // Reset form
+      });
     } catch (error) {
       console.error("Error adding movie:", error);
       alert("Failed to add movie.");

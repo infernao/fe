@@ -10,7 +10,7 @@ const AddTheaterForm = () => {
         screenNumber: 1,
         totalSeats: 50,
         seatLayout: "Standard",
-        seatPrices: { Standard: 10, Premium: 20 } // Default Prices
+        seatPrices: { Standard: 10, Premium: 20 }
       }
     ],
   });

@@ -12,10 +12,10 @@ const AdminBookings = () => {
 
     const fetchBookings = async () => {
         try {
-            const token = localStorage.getItem('token'); // Get token from storage
+            const token = localStorage.getItem('token');
             const response = await axios.get('https://movie-booking-bxks.onrender.com/api/bookings/all', {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Attach token
+                    Authorization: `Bearer ${token}`,
                 },
             });
             console.log(response.data);
@@ -33,7 +33,7 @@ const AdminBookings = () => {
             const token = localStorage.getItem('token');
             await axios.delete(`https://movie-booking-bxks.onrender.com/api/bookings/${bookingId}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Attach token
+                    Authorization: `Bearer ${token}`,
                 },
             });
             console.log("Booking canceled successfully!");

@@ -15,7 +15,7 @@ const Login = ({ onLogin }) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
       onLogin(response.data.role);
-      navigate("/"); // Redirect to home page
+      navigate("/");
     } catch (err) {
       setError("Invalid username or password.");
       console.error(

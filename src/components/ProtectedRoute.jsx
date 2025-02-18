@@ -10,7 +10,7 @@ const ProtectedRoute = ({ element: Element, role, requiredRole, ...rest }) => {
   }
 
   if (requiredRole && userRole !== requiredRole) {
-    return <Navigate to="/" replace />; // Redirect to home or unauthorized page
+    return <Navigate to="/" replace />;
   }
 
   return <Element {...rest} />;

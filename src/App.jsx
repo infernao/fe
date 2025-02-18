@@ -11,21 +11,21 @@ import TheaterDetail from './pages/TheaterDetail';
 import BookMovie from './pages/BookMovie';
 import MyBookings from './pages/MyBookings';
 import AdminDashboard from './pages/AdminDashboard';
-import AdminBookings from './components/AdminBookings'; // Import AdminBookings
+import AdminBookings from './components/AdminBookings';
 import ProtectedRoute from './components/ProtectedRoute';
-import Loading from './components/Loading'; // Import the Loading component
+import Loading from './components/Loading';
 import PaymentSimulation from './pages/paymentSimulation';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [role, setRole] = useState(localStorage.getItem('role') || '');
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading
+
     setTimeout(() => {
       setLoading(false);
-    }, 500); // Adjust duration as needed
+    }, 500);
   }, []);
 
   const handleLogin = (userRole) => {
@@ -39,7 +39,7 @@ function App() {
   };
 
   if (loading) {
-    return <Loading />; // Render the Loading component while loading
+    return <Loading />;
   }
 
   return (
