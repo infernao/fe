@@ -7,19 +7,21 @@ const SHOWTIMES = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
 
 const BookMovie = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [movie, setMovie] = useState(null);
   const [theaters, setTheaters] = useState([]);
   const [selectedTheater, setSelectedTheater] = useState("");
   const [selectedScreen, setSelectedScreen] = useState("");
   const [selectedShowtime, setSelectedShowtime] = useState("");
-  const [seats, setSeats] = useState([]);
+  const [seatLayout, setSeatLayout] = useState([]);
   const [bookedSeats, setBookedSeats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [seatPrices, setSeatPrices] = useState({ Standard: 15, Premium: 30 });
-
+  const [seats, setSeats] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,8 +43,41 @@ const BookMovie = () => {
       }
     };
 
+
     fetchData();
   }, [id]);
+
+
+  useEffect(() => {
+    if (selectedTheater && selectedScreen) {
+
+      const totalSeats = Math.floor(Math.random() * (80 - 40 + 1)) + 40;
+
+      const premiumCountRaw = Math.floor(Math.random() * (35 - 20 + 1)) + 20;
+      const premiumCount = Math.min(premiumCountRaw, totalSeats);
+      const standardCount = totalSeats - premiumCount;
+
+
+      const standardSeats = [];
+      for (let i = 1; i <= standardCount; i++) {
+        standardSeats.push({
+          number: i.toString(),
+          type: "Standard",
+        });
+      }
+
+
+      const premiumSeats = [];
+      for (let i = standardCount + 1; i <= totalSeats; i++) {
+        premiumSeats.push({
+          number: i.toString(),
+          type: "Premium",
+        });
+      }
+
+      setSeatLayout([...standardSeats, ...premiumSeats]);
+    }
+  }, [selectedTheater, selectedScreen]);
 
 
   useEffect(() => {
@@ -50,6 +85,7 @@ const BookMovie = () => {
       fetchBookedSeats();
     }
   }, [selectedTheater, selectedScreen, selectedShowtime, selectedDate]);
+
 
   useEffect(() => {
     if (selectedTheater && selectedScreen) {
@@ -61,12 +97,10 @@ const BookMovie = () => {
     }
   }, [selectedTheater, selectedScreen, theaters]);
 
+
   useEffect(() => {
-    let newTotal = seats.reduce((sum, seat) => {
-      let seatPrice = seatPrices[seat.type] || 0;
-      /*if (seat.type === "Premium") {
-        seatPrice += 15;
-      }*/
+    const newTotal = seats.reduce((sum, seat) => {
+      const seatPrice = seatPrices[seat.type] || 0;
       return sum + seatPrice;
     }, 0);
     setTotalPrice(newTotal);
@@ -74,7 +108,6 @@ const BookMovie = () => {
 
   const fetchBookedSeats = async () => {
     try {
-
       const response = await api.get(
         `/bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}?date=${selectedDate}`
       );
@@ -88,17 +121,17 @@ const BookMovie = () => {
   const handleTheaterChange = (e) => {
     setSelectedTheater(e.target.value);
     setSelectedScreen("");
+    setSeatLayout([]);
     setSeats([]);
     setBookedSeats([]);
-
     setSelectedDate("");
   };
 
   const handleScreenChange = (e) => {
     setSelectedScreen(e.target.value);
+    setSeatLayout([]);
     setSeats([]);
     setBookedSeats([]);
-
     setSelectedDate("");
   };
 
@@ -106,7 +139,6 @@ const BookMovie = () => {
     setSelectedShowtime(e.target.value);
     setSeats([]);
     setBookedSeats([]);
-
     setSelectedDate("");
   };
 
@@ -136,7 +168,6 @@ const BookMovie = () => {
         return;
       }
 
-      console.log("Selected date:", selectedDate);
       const bookingData = {
         movieId: movie._id,
         theaterId: selectedTheater,
@@ -145,15 +176,8 @@ const BookMovie = () => {
         seats: seats.map((seat) => seat.number),
         date: selectedDate,
       };
+
       navigate("/payment-simulation", { state: { ...bookingData, totalPrice } });
-      // const response = await api.post("/bookings", bookingData, {
-      //   headers: {
-      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-      //   },
-      // });
-
-
-
     } catch (error) {
       console.error("Error booking tickets:", error);
       alert("Booking failed. Please try again.");
@@ -235,7 +259,6 @@ const BookMovie = () => {
         </>
       )}
 
-
       {selectedTheater && selectedScreen && selectedShowtime && (
         <>
           <label htmlFor="date">Select Date:</label>
@@ -249,71 +272,62 @@ const BookMovie = () => {
         </>
       )}
 
+      {selectedTheater &&
+        selectedScreen &&
+        selectedShowtime &&
+        selectedDate &&
+        seatLayout.length > 0 && (
+          <>
+            <h3>Select Seats:</h3>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(60px, 1fr))",
+                gap: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              {seatLayout.map((seat) => {
 
-      {selectedTheater && selectedScreen && selectedShowtime && selectedDate && (
-        <>
-          <h3>Select Seats:</h3>
-
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-
-            {[...Array(10)].map((_, i) => {
-              const seatNumber = `S${i + 1}`;
-              const isBooked = bookedSeats.includes(seatNumber);
-              const seatPrice = seatPrices.Standard;
-
-              return (
-                <label
-                  key={seatNumber}
-                  style={{
-                    marginRight: "10px",
-                    opacity: isBooked ? 0.5 : 1,
-                    cursor: isBooked ? "not-allowed" : "pointer"
-                  }}
-                >
-                  {seatNumber} (Standard) - ${seatPrice}
-                  <input
-                    type="checkbox"
-                    value={`${seatNumber}-Standard`}
-                    onChange={handleSeatChange}
-                    disabled={isBooked}
-                  />
-                </label>
-              );
-            })}
-
-
-            {[...Array(6)].map((_, i) => {
-              const seatNumber = `P${i + 1}`;
-              const isBooked = bookedSeats.includes(seatNumber);
-              const seatPrice = seatPrices.Premium;
-
-              return (
-                <label
-                  key={seatNumber}
-                  style={{
-                    marginRight: "10px",
-                    opacity: isBooked ? 0.5 : 1,
-                    cursor: isBooked ? "not-allowed" : "pointer",
-                    fontWeight: "bold", color: "goldenrod"
-                  }}
-                >
-                  {seatNumber} (Premium) - ${seatPrice}
-                  <input
-                    type="checkbox"
-                    value={`${seatNumber}-Premium`}
-                    onChange={handleSeatChange}
-                    disabled={isBooked}
+                const isBooked = bookedSeats.includes(seat.number);
+                return (
+                  <label
+                    key={seat.number}
                     style={{
-                      accentColor: "goldenrod",
+                      width: "60px",
+                      padding: "5px",
+                      border:
+                        seat.type === "Premium"
+                          ? "2px solid goldenrod"
+                          : "1px solid #ccc",
+                      backgroundColor:
+                        seat.type === "Premium" ? "#fffacd" : "#f0f0f0",
+                      opacity: isBooked ? 0.5 : 1,
+                      cursor: isBooked ? "not-allowed" : "pointer",
+                      textAlign: "center",
+                      borderRadius: "4px",
+                      fontSize: "0.8rem",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
                     }}
-                  />
-                </label>
-              );
-            })}
-          </div>
-        </>
-      )}
-
+                  >
+                    {seat.number}
+                    <br />
+                    <small>({seat.type})</small>
+                    <input
+                      type="checkbox"
+                      value={`${seat.number}-${seat.type}`}
+                      onChange={handleSeatChange}
+                      disabled={isBooked}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                );
+              })}
+            </div>
+          </>
+        )}
 
       {seats.length > 0 && (
         <>
@@ -337,6 +351,8 @@ const BookMovie = () => {
 };
 
 export default BookMovie;
+
+
 
 
 

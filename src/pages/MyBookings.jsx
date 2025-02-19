@@ -13,10 +13,38 @@ const MyBookings = () => {
             try {
                 const response = await api.get("/bookings/user");
 
+                // Filter bookings to include only those with a valid movie title and date.
                 const validBookings = response.data.filter(
-                    (booking) => booking.movieId?.title
+                    (booking) => booking.movieId?.title && booking.date
                 );
-                setBookings(validBookings);
+
+                // Create a "today" date set at midnight for accurate comparison.
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                // Split bookings into future (including today) and past.
+                const futureBookings = validBookings.filter((booking) => {
+                    const bookingDate = new Date(booking.date);
+                    bookingDate.setHours(0, 0, 0, 0);
+                    return bookingDate >= today;
+                });
+
+                const pastBookings = validBookings.filter((booking) => {
+                    const bookingDate = new Date(booking.date);
+                    bookingDate.setHours(0, 0, 0, 0);
+                    return bookingDate < today;
+                });
+
+                // Sort future bookings in ascending order (closest future date first)
+                futureBookings.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                // Sort past bookings in descending order (most recent past date first)
+                pastBookings.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                // Combine future bookings first, then past bookings.
+                const combinedBookings = [...futureBookings, ...pastBookings];
+
+                setBookings(combinedBookings);
             } catch (error) {
                 console.error("Error fetching bookings:", error);
                 setError("Failed to fetch bookings. Please try again.");
@@ -63,11 +91,12 @@ const MyBookings = () => {
                     }}
                 >
                     {bookings.map((booking) => {
-
-                        const bookingDate = booking.date
-                            ? new Date(booking.date)
-                            : new Date("2025-02-16");
-                        const isExpired = bookingDate < new Date();
+                        // Compute bookingDate and compare to today for "expired" status.
+                        const bookingDate = booking.date ? new Date(booking.date) : new Date("2025-02-16");
+                        bookingDate.setHours(0, 0, 0, 0);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const isExpired = bookingDate < today;
 
                         return (
                             <div key={booking._id} style={{ position: "relative" }}>
@@ -97,6 +126,9 @@ const MyBookings = () => {
 };
 
 export default MyBookings;
+
+
+
 
 
 
