@@ -47,7 +47,7 @@ const Theaters = () => {
         onChange={handleSearchChange}
         style={{ marginBottom: "10px", padding: "5px", width: "300px" }}
       />
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "center" }}>
         {filteredTheaters.map((theater) => (
           <TheaterCard key={theater._id} theater={theater} />
         ))}

@@ -49,11 +49,12 @@ const Movies = () => {
         onChange={handleSearchChange}
         style={{ marginBottom: "10px", padding: "5px", width: "300px" }}
       />
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "center" }}>
         {filteredMovies.map((movie) => (
           <MovieCard key={movie._id} movie={movie} />
         ))}
       </div>
+
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../CardBackground.css";
 const BookingCard = ({ booking }) => {
   const bookingDate = booking.date
     ? new Date(booking.date)
@@ -7,13 +7,13 @@ const BookingCard = ({ booking }) => {
   const formattedDate = bookingDate.toLocaleDateString();
 
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: "10px",
-        margin: "10px",
-        width: "300px",
-      }}
+    <div className="card"
+    // style={{
+    //   border: "1px solid #ccc",
+    //   padding: "10px",
+    //   margin: "10px",
+    //   width: "300px",
+    //}}
     >
       <h3>Booking ID: {booking._id}</h3>
       <p>Movie: {booking.movieId?.title}</p>
