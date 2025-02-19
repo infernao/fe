@@ -14,7 +14,7 @@ const TheaterCard = ({ theater }) => {
       <h3>{theater.name}</h3>
       <p>Location: {theater.location}</p>
       <Link
-        to={`/movies`}
+        to={`/movies/chotu`}
         style={{ textDecoration: "none", color: "blue" }}
       >
         View Movies

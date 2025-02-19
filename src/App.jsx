@@ -10,6 +10,7 @@ import MovieDetail from './pages/MovieDetail';
 import TheaterDetail from './pages/TheaterDetail';
 import BookMovie from './pages/BookMovie';
 import MyBookings from './pages/MyBookings';
+import AvailableMovie from "./pages/AvailableMovie";
 import AdminDashboard from './pages/AdminDashboard';
 import AdminBookings from './components/AdminBookings';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -53,6 +54,7 @@ function App() {
         <Route path="/theaters" element={<Theaters />} />
         <Route path="/movies/:id" element={<MovieDetail />} />
         <Route path="/theaters/:id" element={<TheaterDetail />} />
+        <Route path="/movies/chotu" element={<AvailableMovie />} />
         <Route path="/book-movie/:id" element={<ProtectedRoute element={BookMovie} role={role} requiredRole="customer" />} />
         <Route path="/my-bookings" element={<ProtectedRoute element={MyBookings} role={role} requiredRole="customer" />} />
         <Route path="/payment-simulation" element={<PaymentSimulation />} />
