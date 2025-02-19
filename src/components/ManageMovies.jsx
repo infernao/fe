@@ -48,7 +48,10 @@ const ManageMovies = () => {
                             padding: "10px",
                             border: "1px solid #ddd",
                             borderRadius: "5px",
-                            backgroundColor: "#f9f9f9",
+                            backgroundColor: "rgba(255, 255, 255, 0.9)", // Translucent white for contrast
+                            color: "#000", // Black text for visibility
+                            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                            fontWeight: "500"
                         }}
                     >
                         <span>{movie.title}</span>

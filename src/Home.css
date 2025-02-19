@@ -1,0 +1,47 @@
+/* Container styling with a gradient background and centered content */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: #fff;
+    text-align: center;
+  }
+  
+  /* Title styling */
+  .home-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  /* Subtitle styling */
+  .home-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  
+  /* Description styling */
+  .home-description {
+    font-size: 1.2rem;
+    max-width: 600px;
+    line-height: 1.5;
+  }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .home-title {
+      font-size: 2rem;
+    }
+    .home-subtitle {
+      font-size: 1.2rem;
+    }
+    .home-description {
+      font-size: 1rem;
+      padding: 0 10px;
+    }
+  }
+  

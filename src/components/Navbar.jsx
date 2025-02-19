@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../Navbar.css";
 
 const Navbar = ({ isLoggedIn, role, onLogout }) => {
   const navigate = useNavigate();
@@ -12,92 +13,55 @@ const Navbar = ({ isLoggedIn, role, onLogout }) => {
   };
 
   return (
-    <nav style={{ backgroundColor: "#f0f0f0", padding: "10px" }}>
-      <ul
-        style={{
-          listStyleType: "none",
-          margin: 0,
-          padding: 0,
-          display: "flex",
-          justifyContent: "space-around",
-        }}
-      >
-        <li>
-          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link to="/movies" style={{ textDecoration: "none", color: "black" }}>
-            Movies
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/theaters"
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            Theaters
-          </Link>
-        </li>
-        {isLoggedIn && role === "customer" && (
+    <nav className="navbar">
+      <div className="navbar-container">
+        {/* Logo or App Name */}
+        <div className="navbar-logo">
+          <Link to="/">MovieApp</Link>
+        </div>
+        {/* Navigation Links */}
+        <ul className="navbar-links">
           <li>
-            <Link
-              to="/my-bookings"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              My Bookings
-            </Link>
+            <Link to="/">Home</Link>
           </li>
-        )}
-        {isLoggedIn && role === "admin" && (
           <li>
-            <Link
-              to="/admin"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              Admin Dashboard
-            </Link>
+            <Link to="/movies">Movies</Link>
           </li>
-        )}
-        {isLoggedIn ? (
           <li>
-            <button
-              onClick={handleLogout}
-              style={{
-                backgroundColor: "#dc3545",
-                color: "white",
-                border: "none",
-                padding: "5px 10px",
-                cursor: "pointer",
-              }}
-            >
+            <Link to="/theaters">Theaters</Link>
+          </li>
+          {isLoggedIn && role === "customer" && (
+            <li>
+              <Link to="/my-bookings">My Bookings</Link>
+            </li>
+          )}
+          {isLoggedIn && role === "admin" && (
+            <li>
+              <Link to="/admin">Admin Dashboard</Link>
+            </li>
+          )}
+        </ul>
+        {/* Authentication Links */}
+        <div className="navbar-auth">
+          {isLoggedIn ? (
+            <button className="logout-btn" onClick={handleLogout}>
               Logout
             </button>
-          </li>
-        ) : (
-          <>
-            <li>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", color: "black" }}
-              >
+          ) : (
+            <>
+              <Link to="/login" className="auth-link">
                 Login
               </Link>
-            </li>
-            <li>
-              <Link
-                to="/register"
-                style={{ textDecoration: "none", color: "black" }}
-              >
+              <Link to="/register" className="auth-link">
                 Register
               </Link>
-            </li>
-          </>
-        )}
-      </ul>
+            </>
+          )}
+        </div>
+      </div>
     </nav>
   );
 };
 
 export default Navbar;
+

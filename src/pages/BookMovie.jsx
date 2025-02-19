@@ -301,7 +301,9 @@ const BookMovie = () => {
                           ? "2px solid goldenrod"
                           : "1px solid #ccc",
                       backgroundColor:
-                        seat.type === "Premium" ? "#fffacd" : "#f0f0f0",
+                        seat.type === "Premium" ? "#fff8e1" : "#ffffff",
+                      color: "#000", // Ensure text is black for good contrast
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                       opacity: isBooked ? 0.5 : 1,
                       cursor: isBooked ? "not-allowed" : "pointer",
                       textAlign: "center",

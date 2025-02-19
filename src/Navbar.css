@@ -1,0 +1,96 @@
+/* Overall Navbar styling with a modern gradient background and box shadow */
+.navbar {
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #fff;
+  }
+  
+  /* Container to center and space out navbar content */
+  .navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Logo styling */
+  .navbar-logo a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  /* Navbar links styling */
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-links li a {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #fff;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar-links li a:hover {
+    color: #000;
+  }
+  
+  /* Authentication links styling */
+  .navbar-auth {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .auth-link {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .auth-link:hover {
+    color: #000;
+  }
+  
+  /* Logout button styling */
+  .logout-btn {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+    padding: 8px 15px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .navbar-container {
+      flex-direction: column;
+    }
+    
+    .navbar-links {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .navbar-auth {
+      margin-top: 10px;
+    }
+  }
+  
