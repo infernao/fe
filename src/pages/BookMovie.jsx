@@ -287,7 +287,7 @@ const BookMovie = () => {
             <div className="seats-grid">
               {seatLayout.map((seat) => {
                 const isBooked = bookedSeats.includes(seat.number);
-                const seatClass = {`seat-label ${seat.type.toLowerCase()} ${isBooked ? 'booked' : ''}`};
+                const seatClass = seat-label ${seat.type.toLowerCase()} ${isBooked ? 'booked' : ''};
                 return (
                   <label
                     key={seat.number}
