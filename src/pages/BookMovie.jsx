@@ -28,7 +28,7 @@ const BookMovie = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const movieResponse = await api.get(/movies/${id});
+        const movieResponse = await api.get("/movies/${id}");
         setMovie(movieResponse.data);
 
         const theatersResponse = await api.get("/theaters");
