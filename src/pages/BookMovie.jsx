@@ -111,7 +111,7 @@ const BookMovie = () => {
   const fetchBookedSeats = async () => {
     try {
       const response = await api.get(
-        /bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}?date=${selectedDate}
+        "/bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}?date=${selectedDate}"
       );
       setBookedSeats(response.data.bookedSeats || []);
     } catch (error) {
