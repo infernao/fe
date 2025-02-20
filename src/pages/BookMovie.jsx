@@ -297,7 +297,7 @@ const BookMovie = () => {
                     <span className="seat-type">{seat.type}</span>
                     <input
                       type="checkbox"
-                      value={${seat.number}-${seat.type}}
+                      const seatClass = `seat-label ${seat.type.toLowerCase()} ${isBooked ? 'booked' : ''}`;
                       onChange={handleSeatChange}
                       disabled={isBooked}
                       style={{ display: 'none' }}
