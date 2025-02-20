@@ -24,59 +24,115 @@ const Register = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
-      <h2>Register</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column" }}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        background: "linear-gradient(135deg, #ff416c, #ff4b2b)",
+      }}
+    >
+      <div
+        style={{
+          background: "rgba(255, 255, 255, 0.2)",
+          padding: "30px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.3)",
+          maxWidth: "400px",
+          width: "100%",
+          textAlign: "center",
+          color: "white",
+        }}
       >
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          style={{ marginBottom: "10px", padding: "5px" }}
-        />
-
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ marginBottom: "10px", padding: "5px" }}
-        />
-
-        <label htmlFor="role">Role:</label>
-        <select
-          id="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          style={{ marginBottom: "10px", padding: "5px" }}
-        >
-          <option value="customer">Customer</option>
-          <option value="admin">Admin</option>
-        </select>
-
-        <button
-          type="submit"
+        <h2 style={{ fontSize: "28px", marginBottom: "20px" }}>Register</h2>
+        {error && <p style={{ color: "yellow", fontWeight: "bold" }}>{error}</p>}
+        <form
+          onSubmit={handleSubmit}
           style={{
-            backgroundColor: "#28a745",
-            color: "white",
-            padding: "10px",
-            border: "none",
-            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          Register
-        </button>
-      </form>
+          <label htmlFor="username" style={{ textAlign: "left", fontWeight: "bold" }}>
+            Username:
+          </label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            style={{
+              marginBottom: "15px",
+              padding: "10px",
+              borderRadius: "6px",
+              border: "none",
+              fontSize: "16px",
+            }}
+          />
+
+          <label htmlFor="password" style={{ textAlign: "left", fontWeight: "bold" }}>
+            Password:
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              marginBottom: "15px",
+              padding: "10px",
+              borderRadius: "6px",
+              border: "none",
+              fontSize: "16px",
+            }}
+          />
+
+          <label htmlFor="role" style={{ textAlign: "left", fontWeight: "bold" }}>
+            Role:
+          </label>
+          <select
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            style={{
+              marginBottom: "15px",
+              padding: "10px",
+              borderRadius: "6px",
+              border: "none",
+              fontSize: "16px",
+            }}
+          >
+            <option value="customer">Customer</option>
+            <option value="admin">Admin</option>
+          </select>
+
+          <button
+            type="submit"
+            style={{
+              background: "linear-gradient(135deg, #28a745, #218838)",
+              color: "white",
+              padding: "12px",
+              borderRadius: "8px",
+              fontSize: "18px",
+              fontWeight: "bold",
+              border: "none",
+              cursor: "pointer",
+              transition: "0.3s",
+            }}
+          >
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
 
 export default Register;
+

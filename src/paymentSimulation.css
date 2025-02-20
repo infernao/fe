@@ -1,0 +1,181 @@
+.payment-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+    padding: 3rem 1rem;
+  }
+  
+  .payment-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .payment-header {
+    background: #4f46e5;
+    padding: 2rem;
+    text-align: center;
+    color: white;
+  }
+  
+  .payment-header svg {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+  }
+  
+  .payment-header h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .payment-content {
+    padding: 2rem;
+  }
+  
+  .booking-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .detail-item {
+    margin-bottom: 1rem;
+  }
+  
+  .detail-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  
+  .detail-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .seats-container {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .seats-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .seat-tag {
+    background: #e0e7ff;
+    color: #4f46e5;
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .total-amount {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .total-amount-label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .total-amount-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4f46e5;
+  }
+  
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #fee2e2;
+    color: #dc2626;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+  
+  .error-message svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .buttons-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .buttons-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    border: none;
+    color: white;
+  }
+  
+  .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .button svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .button-success {
+    background: #059669;
+  }
+  
+  .button-success:hover:not(:disabled) {
+    background: #047857;
+  }
+  
+  .button-danger {
+    background: #dc2626;
+  }
+  
+  .button-danger:hover:not(:disabled) {
+    background: #b91c1c;
+  }
+  
+  .button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+  
+  .button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4);
+  }

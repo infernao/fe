@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import Loading from "../components/Loading";
+import "../BookingForm.css";
 
 const SHOWTIMES = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
 
@@ -197,32 +198,34 @@ const BookMovie = () => {
     : [];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Book Tickets for {movie.title}</h2>
+    <div className="booking-container">
+      <h2 className="booking-title">Book Tickets for {movie.title}</h2>
 
-      <label htmlFor="theater">Select Theater:</label>
-      <select
-        id="theater"
-        value={selectedTheater}
-        onChange={handleTheaterChange}
-        style={{ marginBottom: "10px", padding: "5px" }}
-      >
-        <option value="">Select a Theater</option>
-        {theaters.map((theater) => (
-          <option key={theater._id} value={theater._id}>
-            {theater.name}
-          </option>
-        ))}
-      </select>
+      <div className="form-group">
+        <label className="form-label" htmlFor="theater">Select Theater</label>
+        <select
+          id="theater"
+          className="form-select"
+          value={selectedTheater}
+          onChange={handleTheaterChange}
+        >
+          <option value="">Select a Theater</option>
+          {theaters.map((theater) => (
+            <option key={theater._id} value={theater._id}>
+              {theater.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {selectedTheater && (
-        <>
-          <label htmlFor="screen">Select Screen:</label>
+        <div className="form-group">
+          <label className="form-label" htmlFor="screen">Select Screen</label>
           <select
             id="screen"
+            className="form-select"
             value={selectedScreen}
             onChange={handleScreenChange}
-            style={{ marginBottom: "10px", padding: "5px" }}
           >
             <option value="">Select a Screen</option>
             {availableScreens.map((screen) => (
@@ -231,17 +234,17 @@ const BookMovie = () => {
               </option>
             ))}
           </select>
-        </>
+        </div>
       )}
 
       {selectedTheater && selectedScreen && (
-        <>
-          <label htmlFor="showtime">Select Showtime:</label>
+        <div className="form-group">
+          <label className="form-label" htmlFor="showtime">Select Showtime</label>
           <select
             id="showtime"
+            className="form-select"
             value={selectedShowtime}
             onChange={handleShowtimeChange}
-            style={{ marginBottom: "10px", padding: "5px" }}
           >
             <option value="">Select a Showtime</option>
             {movie.showtimes && movie.showtimes.length > 0
@@ -256,20 +259,20 @@ const BookMovie = () => {
                 </option>
               ))}
           </select>
-        </>
+        </div>
       )}
 
       {selectedTheater && selectedScreen && selectedShowtime && (
-        <>
-          <label htmlFor="date">Select Date:</label>
+        <div className="form-group">
+          <label className="form-label" htmlFor="date">Select Date</label>
           <input
             type="date"
             id="date"
+            className="form-date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            style={{ marginBottom: "10px", padding: "5px" }}
           />
-        </>
+        </div>
       )}
 
       {selectedTheater &&
@@ -277,76 +280,44 @@ const BookMovie = () => {
         selectedShowtime &&
         selectedDate &&
         seatLayout.length > 0 && (
-          <>
-            <h3>Select Seats:</h3>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(60px, 1fr))",
-                gap: "10px",
-                marginBottom: "20px",
-              }}
-            >
+          <div className="seats-section">
+            <h3 className="seats-title">Select Seats</h3>
+            <div className="seats-grid">
               {seatLayout.map((seat) => {
-
                 const isBooked = bookedSeats.includes(seat.number);
+                const seatClass = `seat-label ${seat.type.toLowerCase()} ${isBooked ? 'booked' : ''}`;
+
                 return (
                   <label
                     key={seat.number}
-                    style={{
-                      width: "60px",
-                      padding: "5px",
-                      border:
-                        seat.type === "Premium"
-                          ? "2px solid goldenrod"
-                          : "1px solid #ccc",
-                      backgroundColor:
-                        seat.type === "Premium" ? "#fff8e1" : "#ffffff",
-                      color: "#000", // Ensure text is black for good contrast
-                      boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-                      opacity: isBooked ? 0.5 : 1,
-                      cursor: isBooked ? "not-allowed" : "pointer",
-                      textAlign: "center",
-                      borderRadius: "4px",
-                      fontSize: "0.8rem",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }}
+                    className={seatClass}
                   >
-                    {seat.number}
-                    <br />
-                    <small>({seat.type})</small>
+                    <span className="seat-number">{seat.number}</span>
+                    <span className="seat-type">{seat.type}</span>
                     <input
                       type="checkbox"
                       value={`${seat.number}-${seat.type}`}
                       onChange={handleSeatChange}
                       disabled={isBooked}
-                      style={{ display: "none" }}
+                      style={{ display: 'none' }}
                     />
                   </label>
                 );
               })}
             </div>
-          </>
+          </div>
         )}
 
       {seats.length > 0 && (
-        <>
-          <h3>Total Price: ${totalPrice}</h3>
+        <div className="booking-summary">
+          <h3 className="total-price">Total Price: ${totalPrice}</h3>
           <button
             onClick={handleBooking}
-            style={{
-              backgroundColor: "#007bff",
-              color: "white",
-              padding: "10px",
-              border: "none",
-              cursor: "pointer",
-            }}
+            className="book-button"
           >
             Book Now
           </button>
-        </>
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { CreditCard, AlertCircle, CheckCircle2, XCircle } from "lucide-react";
+import "../paymentSimulation.css";
 
 const PaymentSimulation = () => {
     const location = useLocation();
@@ -53,24 +55,79 @@ const PaymentSimulation = () => {
         }
     };
 
+    if (!bookingData) return null;
+
     return (
-        <div>
-            <h2>Payment Simulation</h2>
-            <p>Movie: {bookingData?.movieTitle}</p>
-            <p>Theater: {bookingData?.theaterId}</p>
-            <p>Screen: {bookingData?.screenNumber}</p>
-            <p>Showtime: {bookingData?.showtime}</p>
-            <p>Seats: {bookingData?.seats?.join(", ")}</p>
-            <p>Total Price: ${bookingData?.totalPrice}</p>
+        <div className="payment-container">
+            <div className="payment-card">
+                <div className="payment-header">
+                    <CreditCard />
+                    <h2>Payment Simulation</h2>
+                </div>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+                <div className="payment-content">
+                    <div className="booking-details">
+                        <div className="detail-item">
+                            <p className="detail-label">Movie</p>
+                            <p className="detail-value">{bookingData.movieTitle}</p>
+                        </div>
+                        <div className="detail-item">
+                            <p className="detail-label">Theater</p>
+                            <p className="detail-value">{bookingData.theaterId}</p>
+                        </div>
+                        <div className="detail-item">
+                            <p className="detail-label">Screen</p>
+                            <p className="detail-value">{bookingData.screenNumber}</p>
+                        </div>
+                        <div className="detail-item">
+                            <p className="detail-label">Showtime</p>
+                            <p className="detail-value">{bookingData.showtime}</p>
+                        </div>
+                    </div>
 
-            <button onClick={() => handlePayment(true)} disabled={loading}>
-                {loading ? "Processing..." : "Pay Successfully"}
-            </button>
-            <button onClick={() => handlePayment(false)} disabled={loading}>
-                {loading ? "Processing..." : "Fail Payment"}
-            </button>
+                    <div className="seats-container">
+                        <p className="detail-label">Selected Seats</p>
+                        <div className="seats-list">
+                            {bookingData.seats.map((seat) => (
+                                <span key={seat} className="seat-tag">
+                                    {seat}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="total-amount">
+                        <p className="total-amount-label">Total Amount</p>
+                        <p className="total-amount-value">${bookingData.totalPrice}</p>
+                    </div>
+
+                    {error && (
+                        <div className="error-message">
+                            <AlertCircle />
+                            <p>{error}</p>
+                        </div>
+                    )}
+
+                    <div className="buttons-container">
+                        <button
+                            onClick={() => handlePayment(true)}
+                            disabled={loading}
+                            className="button button-success"
+                        >
+                            <CheckCircle2 />
+                            {loading ? "Processing..." : "Pay Successfully"}
+                        </button>
+                        <button
+                            onClick={() => handlePayment(false)}
+                            disabled={loading}
+                            className="button button-danger"
+                        >
+                            <XCircle />
+                            {loading ? "Processing..." : "Fail Payment"}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
