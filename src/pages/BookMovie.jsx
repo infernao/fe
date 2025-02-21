@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/api";
@@ -30,7 +29,7 @@ const BookMovie = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const movieResponse = await api.get("/movies/${id}");
+        const movieResponse = await api.get(`/movies/${id}`);
         setMovie(movieResponse.data);
 
         const theatersResponse = await api.get("/theaters");
@@ -103,7 +102,7 @@ const BookMovie = () => {
   const fetchBookedSeats = async () => {
     try {
       const response = await api.get(
-        "/bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}?date=${selectedDate}"
+        `/bookings/${selectedTheater}/${selectedScreen}/${selectedShowtime}?date=${selectedDate}`
       );
       setBookedSeats(response.data.bookedSeats || []);
     } catch (error) {
@@ -263,7 +262,6 @@ const BookMovie = () => {
             id="date"
             className="form-date"
             value={selectedDate}
-            min={new Date().toISOString().split("T")[0]}
             onChange={(e) => setSelectedDate(e.target.value)}
             min={todayDate}
           />
@@ -288,8 +286,7 @@ const BookMovie = () => {
                     width: "60px",
                     padding: "5px",
                     border: seat.type === "Premium" ? "2px solid goldenrod" : "1px solid #ccc",
-                    backgroundColor: isSelected ? "red" : seat.type === "Premium" ? "#fff8e1" : "#3bb1f5",
-                    color: "#000",
+                    backgroundColor: isSelected ? "red" : seat.type === "Premium" ? "#fff8e1" : " #3bb1f5", color: "#000",
                     boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                     opacity: isBooked ? 0.5 : 1,
                     cursor: isBooked ? "not-allowed" : "pointer",
@@ -305,10 +302,10 @@ const BookMovie = () => {
                     <span className="seat-type">{seat.type}</span>
                     <input
                       type="checkbox"
-                      const seatClass= `seat-label ${seat.type.toLowerCase()} ${isBooked ? 'booked' : ''}`;
-                    onChange={handleSeatChange}
-                    disabled={isBooked}
-                    style={{ display: "none" }}
+                      value={`${seat.number}-${seat.type}`}
+                      onChange={handleSeatChange}
+                      disabled={isBooked}
+                      style={{ display: "none" }}
                     />
                   </label>
                 );
@@ -331,6 +328,7 @@ const BookMovie = () => {
 };
 
 export default BookMovie;
+
 
 
 
