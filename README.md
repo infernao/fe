@@ -73,6 +73,24 @@ cd infernao-fe
 ### 3️⃣ Install the required dependencies for the backend:
 npm install
 
+## Running the Application
+
+### 1️⃣ Run the backend:
+clone the Backend repository first: (https://github.com/infernao/movie-booking)
+
+npm run dev
+
+### 2️⃣ Run the frontend:
+npm run dev
+
+The frontend application will run on **[http://localhost:3000](http://localhost:5173)** by default.  
+The backend API will run on **[http://localhost:5000](http://localhost:5000)**.  
+
+### 3️⃣ Login Credentials:
+**CUSTOMER/USER**: Pushpak 1234
+
+**ADMIN**: ADMIN ADMIN
+
 ---
 
 ## 📂 Components Overview
