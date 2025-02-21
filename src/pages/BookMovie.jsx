@@ -23,6 +23,8 @@ const BookMovie = () => {
   const [seats, setSeats] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
 
+  // Get today's date in YYYY-MM-DD format for the date input min attribute
+  const todayDate = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +34,6 @@ const BookMovie = () => {
 
         const theatersResponse = await api.get("/theaters");
         setTheaters(theatersResponse.data);
-
 
         if (movieResponse.data.showtimes && movieResponse.data.showtimes.length > 0) {
           setSelectedShowtime(movieResponse.data.showtimes[0]);
@@ -44,20 +45,15 @@ const BookMovie = () => {
       }
     };
 
-
     fetchData();
   }, [id]);
 
-
   useEffect(() => {
     if (selectedTheater && selectedScreen) {
-
       const totalSeats = Math.floor(Math.random() * (80 - 40 + 1)) + 40;
-
       const premiumCountRaw = Math.floor(Math.random() * (35 - 20 + 1)) + 20;
       const premiumCount = Math.min(premiumCountRaw, totalSeats);
       const standardCount = totalSeats - premiumCount;
-
 
       const standardSeats = [];
       for (let i = 1; i <= standardCount; i++) {
@@ -66,7 +62,6 @@ const BookMovie = () => {
           type: "Standard",
         });
       }
-
 
       const premiumSeats = [];
       for (let i = standardCount + 1; i <= totalSeats; i++) {
@@ -80,13 +75,11 @@ const BookMovie = () => {
     }
   }, [selectedTheater, selectedScreen]);
 
-
   useEffect(() => {
     if (selectedTheater && selectedScreen && selectedShowtime && selectedDate) {
       fetchBookedSeats();
     }
   }, [selectedTheater, selectedScreen, selectedShowtime, selectedDate]);
-
 
   useEffect(() => {
     if (selectedTheater && selectedScreen) {
@@ -97,7 +90,6 @@ const BookMovie = () => {
       }
     }
   }, [selectedTheater, selectedScreen, theaters]);
-
 
   useEffect(() => {
     const newTotal = seats.reduce((sum, seat) => {
@@ -271,6 +263,7 @@ const BookMovie = () => {
             className="form-date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
+            min={todayDate}
           />
         </div>
       )}
@@ -285,21 +278,35 @@ const BookMovie = () => {
             <div className="seats-grid">
               {seatLayout.map((seat) => {
                 const isBooked = bookedSeats.includes(seat.number);
-                const seatClass = `seat-label ${seat.type.toLowerCase()} ${isBooked ? 'booked' : ''}`;
-
+                const isSelected = seats.some((s) => s.number === seat.number);
+                const seatClass = `seat-label ${seat.type.toLowerCase()} ${isBooked ? "booked" : ""
+                  } ${isSelected ? "selected" : ""}`;
                 return (
-                  <label
-                    key={seat.number}
-                    className={seatClass}
-                  >
+                  <label key={seat.number} className={seatClass} style={{
+                    width: "60px",
+                    padding: "5px",
+                    border: seat.type === "Premium" ? "2px solid goldenrod" : "1px solid #ccc",
+                    backgroundColor: isSelected ? "red" : seat.type === "Premium" ? "#fff8e1" : "#3bb1f5",
+                    color: "#000",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                    opacity: isBooked ? 0.5 : 1,
+                    cursor: isBooked ? "not-allowed" : "pointer",
+                    textAlign: "center",
+                    borderRadius: "4px",
+                    fontSize: "0.8rem",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }}>
                     <span className="seat-number">{seat.number}</span>
+                    <br />
                     <span className="seat-type">{seat.type}</span>
                     <input
                       type="checkbox"
                       value={`${seat.number}-${seat.type}`}
                       onChange={handleSeatChange}
                       disabled={isBooked}
-                      style={{ display: 'none' }}
+                      style={{ display: "none" }}
                     />
                   </label>
                 );
@@ -310,11 +317,9 @@ const BookMovie = () => {
 
       {seats.length > 0 && (
         <div className="booking-summary">
-          <h3 className="total-price">Total Price: ${totalPrice}</h3>
-          <button
-            onClick={handleBooking}
-            className="book-button"
-          >
+          <h3 className="total-price">Total Price: ₹{totalPrice}</h3>
+          <p className="selected-seats">Selected Seats: {seats.map(s => s.number).join(", ")}</p>
+          <button onClick={handleBooking} className="book-button">
             Book Now
           </button>
         </div>
@@ -324,6 +329,8 @@ const BookMovie = () => {
 };
 
 export default BookMovie;
+
+
 
 
 

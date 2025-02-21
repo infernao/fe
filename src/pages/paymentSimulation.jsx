@@ -98,7 +98,7 @@ const PaymentSimulation = () => {
 
                     <div className="total-amount">
                         <p className="total-amount-label">Total Amount</p>
-                        <p className="total-amount-value">${bookingData.totalPrice}</p>
+                        <p className="total-amount-value">₹{bookingData.totalPrice}</p>
                     </div>
 
                     {error && (
